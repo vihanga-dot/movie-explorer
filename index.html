@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" class="transition-colors duration-700 ease-in-out">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movie App</title>
+    <!-- Optional: Customize Tailwind for dark mode toggle -->
+    <!-- 1.  tell Tailwind what we want BEFORE it runs -->
+    <script>
+      window.tailwindConfig = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#1f2937",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- 2.  load the CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- 3.  hand the object to Tailwind once it exists -->
+    <script>
+      // CDN creates `tailwind` *after* it loads; push our object into it
+      document.addEventListener("DOMContentLoaded", () => {
+        if (typeof tailwind !== "undefined") {
+          tailwind.config = window.tailwindConfig;
+        }
+      });
+    </script>
+    <!-- Custom CSS (optional) -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body
+    class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen transition-colors duration-700 ease-in-out"
+  >
+    <!-- Header -->
+    <header
+      id="navbar"
+      class="sticky top-0 z-50 bg-white/70 dark:bg-gray-900/70 backdrop-blur-lg shadow-sm transition-colors duration-500"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <!-- Logo -->
+          <a
+            href="index.html"
+            class="flex items-center gap-2 text-xl font-bold text-gray-800 dark:text-white"
+          >
+            <span class="text-2xl">🎬</span>
+            <span>Movie Explorer</span>
+          </a>
+
+          <!-- Desktop Nav -->
+          <nav
+            class="hidden md:flex items-center gap-6 text-gray-700 dark:text-gray-200"
+          >
+            <a href="index.html" class="nav-link hover:text-blue-500 transition"
+              >Home</a
+            >
+            <a
+              href="watchlist.html"
+              class="nav-link hover:text-blue-500 transition"
+              >Watchlist</a
+            >
+            <a
+              href="recommendations.html"
+              class="nav-link hover:text-blue-500 transition"
+              >Recommendations</a
+            >
+          </nav>
+
+          <!-- Auth Links -->
+          <div id="auth-links" class="md:flex items-center gap-6 text-gray-700 dark:text-gray-200">
+            <a href="login.html" class="nav-link hover:text-blue-500 transition">Login</a>
+            <a href="signup.html" class="nav-link hover:text-blue-500 transition">Sign Up</a>
+          </div>
+
+          <!-- User Links -->
+          <div id="user-links" class="md:flex items-center gap-6 text-gray-700 dark:text-gray-200">
+            <a href="profile.html" class="nav-link hover:text-blue-500 transition">Profile</a>
+            <button id="logout-btn" class="nav-link hover:text-blue-500 transition">Logout</button>
+          </div>
+
+          <!-- Theme toggle + Mobile button -->
+          <div class="flex items-center gap-3">
+            <!-- Theme toggle -->
+            <button
+              id="theme-toggle"
+              class="relative flex items-center justify-between w-14 h-8 p-1 rounded-full bg-gray-200 dark:bg-gray-700 transition"
+            >
+              <!-- Sun icon -->
+              <svg
+                id="icon-sun"
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5 text-yellow-500"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path d="M10 15a5 5 0 100-10 5 5 0 000 10z" />
+              </svg>
+
+              <!-- Moon icon -->
+              <svg
+                id="icon-moon"
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5 text-gray-200 hidden"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M17.293 13.293a8 8 0 11-10.586-10.586 8 8 0 0010.586 10.586z"
+                />
+              </svg>
+
+              <!-- Knob -->
+              <span
+                id="theme-knob"
+                class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow-md transform transition-transform"
+              ></span>
+            </button>
+
+            <!-- Mobile Menu Toggle -->
+            <button
+              id="mobile-menu-btn"
+              class="md:hidden p-2 text-gray-700 dark:text-gray-200 focus:outline-none"
+            >
+              <svg
+                id="menu-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+              <svg
+                id="close-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6 hidden"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div
+          id="mobile-menu"
+          class="hidden flex-col space-y-3 mt-3 pb-3 text-gray-700 dark:text-gray-200 transform transition-all duration-500 origin-top scale-y-0 opacity-0"
+        >
+          <a
+            href="index.html"
+            class="nav-link block hover:text-blue-500 transition"
+            >Home</a
+          >
+          <a
+            href="watchlist.html"
+            class="nav-link block hover:text-blue-500 transition"
+            >Watchlist</a
+          >
+          <a
+            href="recommendations.html"
+            class="nav-link block hover:text-blue-500 transition"
+            >Recommendations</a
+          >
+          <div id="mobile-auth-links" class="flex flex-col space-y-3">
+            <a href="login.html" class="nav-link block hover:text-blue-500 transition">Login</a>
+            <a href="signup.html" class="nav-link block hover:text-blue-500 transition">Sign Up</a>
+          </div>
+          <div id="mobile-user-links" class="flex flex-col space-y-3">
+            <a href="profile.html" class="nav-link block hover:text-blue-500 transition">Profile</a>
+            <button id="mobile-logout-btn" class="nav-link block hover:text-blue-500 transition text-left">Logout</button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <br>
+
+    <!-- Search Bar -->
+    <!-- replace the old search div -->
+    <div class="flex justify-center w-full mt-4 md:mt-0">
+      <div class="relative w-full max-w-md">
+        <!-- Search Icon -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 dark:text-gray-400 pointer-events-none transition-colors duration-300"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z"
+          />
+        </svg>
+
+        <!-- Search Input -->
+        <input
+          id="search-input"
+          type="text"
+          placeholder="Search movies..."
+          class="w-full pl-11 pr-4 py-3 rounded-full bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 shadow-sm hover:shadow-md focus:shadow-lg"
+        />
+      </div>
+    </div>
+    <br>
+
+    <!-- Genre Filters (placeholder) -->
+    <div id="genre-filters" class="flex flex-wrap gap-2 px-4 pb-2">
+      <!-- Genre buttons will be rendered here -->
+    </div>
+    <!-- Filters -->
+    <div id="filters" class="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg my-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label for="rating" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Minimum Rating</label>
+          <input type="range" id="rating" min="0" max="10" value="0" step="0.5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+          <span id="rating-value" class="text-sm text-gray-500 dark:text-gray-400">0</span>
+        </div>
+        <div>
+          <label for="year" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Release Year</label>
+          <select id="year" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600">
+            <option value="">All</option>
+            <!-- Years will be populated by JS -->
+          </select>
+        </div>
+        <div>
+          <label for="sort-by" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Sort By</label>
+          <select id="sort-by" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600">
+            <option value="popularity.desc">Popularity</option>
+            <option value="release_date.desc">Release Date</option>
+            <option value="revenue.desc">Revenue</option>
+            <option value="vote_average.desc">Rating</option>
+          </select>
+        </div>
+      </div>
+      <div class="mt-4 text-right">
+        <button id="apply-filters" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Apply Filters</button>
+      </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="spinner" class="text-center my-6 hidden">
+      <svg
+        class="animate-spin h-8 w-8 text-blue-600 mx-auto"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        ></circle>
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v8z"
+        ></path>
+      </svg>
+      <p class="mt-2 text-gray-500 dark:text-gray-400">Loading...</p>
+    </div>
+
+    <!-- Movie Grid -->
+    <main class="p-4">
+      <h2 class="text-xl mb-4 font-semibold">Popular Movies</h2>
+      <div id="movie-grid" class="grid gap-4 grid-cols-2 md:grid-cols-4">
+        <!-- Movies will be rendered here -->
+      </div>
+
+      <!-- Load More Button -->
+      <!--<div class="text-center mt-6">
+        <button
+          id="load-more"
+          class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 hidden"
+        >
+          Load More
+        </button>
+      </div>-->
+    </main>
+
+    <!-- Script -->
+    <!-- end of <body> -->
+    <script src="js/config.js"></script>
+    <script src="js/watchlist.js"></script>
+    <script src="js/script.js" defer></script>
+  </body>
+</html>

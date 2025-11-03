@@ -1,0 +1,85 @@
+html {
+  scroll-behavior: smooth;
+}
+
+/* Smooth underline slide */
+.nav-link {
+  position: relative;
+  padding: 4px 0;
+  transition: color 0.3s ease;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 2px;
+  width: 0;
+  background: #3b82f6; /* Tailwind blue-500 */
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Navbar fade-in on load */
+#navbar {
+  animation: fadeIn 0.6s ease forwards;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#search-input:focus + svg {
+  animation: pulse 1.2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1) translateY(-50%); }
+  50%      { transform: scale(1.15) translateY(-50%); }
+}
+
+/* glass cards */
+.rec-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  /* glass background */
+  background-color: rgba(31, 41, 55, 0.3);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.rec-card:hover {
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.12);
+  transform: scale(1.05);
+}
+
+/* keep images sharp */
+.rec-card img {
+  transition: transform 0.5s ease;
+}
+.rec-card:hover img {
+  transform: scale(1.08);
+}
+
+.genre-btn.active {
+  background-color: #2563eb; /* Tailwind bg-blue-600 */
+  color: #fff; /* Tailwind text-white */
+  border: 2px solid #1d4ed8; /* Darker blue border to make it stand out more */
+  transform: scale(1.05); /* Slightly enlarge the active button */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Add subtle shadow */
+}
+
+.movie-card {
+  transition: all 0.4s ease;
+}
+

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" class="transition-colors duration-700 ease-in-out">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Watchlist</title>
+    <!-- Optional: Customize Tailwind for dark mode toggle -->
+    <!-- 1.  tell Tailwind what we want BEFORE it runs -->
+    <script>
+      window.tailwindConfig = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#1f2937",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- 2.  load the CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- 3.  hand the object to Tailwind once it exists -->
+    <script>
+      // CDN creates `tailwind` *after* it loads; push our object into it
+      document.addEventListener("DOMContentLoaded", () => {
+        if (typeof tailwind !== "undefined") {
+          tailwind.config = window.tailwindConfig;
+        }
+      });
+    </script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body
+    class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen transition-colors duration-700 ease-in-out"
+  >
+    <header
+      id="navbar"
+      class="sticky top-0 z-50 bg-white/70 dark:bg-gray-900/70 backdrop-blur-lg shadow-sm transition-colors duration-500"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <!-- Logo -->
+          <a
+            href="index.html"
+            class="flex items-center gap-2 text-xl font-bold text-gray-800 dark:text-white"
+          >
+            <span class="text-2xl">🎬</span>
+            <span>Movie Explorer</span>
+          </a>
+
+          <!-- Desktop Nav -->
+          <nav
+            class="hidden md:flex items-center gap-6 text-gray-700 dark:text-gray-200"
+          >
+            <a href="index.html" class="nav-link hover:text-blue-500 transition"
+              >Home</a
+            >
+            <a
+              href="watchlist.html"
+              class="nav-link hover:text-blue-500 transition"
+              >Watchlist</a
+            >
+            <a
+              href="recommendations.html"
+              class="nav-link hover:text-blue-500 transition"
+              >Recommendations</a
+            >
+          </nav>
+
+          <!-- Auth Links -->
+          <div id="auth-links" class="md:flex items-center gap-6 text-gray-700 dark:text-gray-200">
+            <a href="login.html" class="nav-link hover:text-blue-500 transition">Login</a>
+            <a href="signup.html" class="nav-link hover:text-blue-500 transition">Sign Up</a>
+          </div>
+
+          <!-- User Links -->
+          <div id="user-links" class="md:flex items-center gap-6 text-gray-700 dark:text-gray-200">
+            <a href="profile.html" class="nav-link hover:text-blue-500 transition">Profile</a>
+            <button id="logout-btn" class="nav-link hover:text-blue-500 transition">Logout</button>
+          </div>
+
+          <!-- Theme toggle + Mobile button -->
+          <div class="flex items-center gap-3">
+            <!-- Theme toggle -->
+            <button
+              id="theme-toggle"
+              class="relative flex items-center justify-between w-14 h-8 p-1 rounded-full bg-gray-200 dark:bg-gray-700 transition"
+            >
+              <!-- Sun icon -->
+              <svg
+                id="icon-sun"
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5 text-yellow-500"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path d="M10 15a5 5 0 100-10 5 5 0 000 10z" />
+              </svg>
+
+              <!-- Moon icon -->
+              <svg
+                id="icon-moon"
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5 text-gray-200 hidden"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M17.293 13.293a8 8 0 11-10.586-10.586 8 8 0 0010.586 10.586z"
+                />
+              </svg>
+
+              <!-- Knob -->
+              <span
+                id="theme-knob"
+                class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow-md transform transition-transform"
+              ></span>
+            </button>
+
+            <!-- Mobile Menu Toggle -->
+            <button
+              id="mobile-menu-btn"
+              class="md:hidden p-2 text-gray-700 dark:text-gray-200 focus:outline-none"
+            >
+              <svg
+                id="menu-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+              <svg
+                id="close-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6 hidden"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div
+          id="mobile-menu"
+          class="hidden flex-col space-y-3 mt-3 pb-3 text-gray-700 dark:text-gray-200 transform transition-all duration-500 origin-top scale-y-0 opacity-0"
+        >
+          <a
+            href="index.html"
+            class="nav-link block hover:text-blue-500 transition"
+            >Home</a
+          >
+          <a
+            href="watchlist.html"
+            class="nav-link block hover:text-blue-500 transition"
+            >Watchlist</a
+          >
+          <a
+            href="recommendations.html"
+            class="nav-link block hover:text-blue-500 transition"
+            >Recommendations</a
+          >
+          <div id="mobile-auth-links" class="flex flex-col space-y-3">
+            <a href="login.html" class="nav-link block hover:text-blue-500 transition">Login</a>
+            <a href="signup.html" class="nav-link block hover:text-blue-500 transition">Sign Up</a>
+          </div>
+          <div id="mobile-user-links" class="flex flex-col space-y-3">
+            <a href="profile.html" class="nav-link block hover:text-blue-500 transition">Profile</a>
+            <button id="mobile-logout-btn" class="nav-link block hover:text-blue-500 transition text-left">Logout</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="p-4">
+      <div id="watchlist-grid" class="grid gap-4 grid-cols-2 md:grid-cols-4">
+        <!-- cards injected by JS -->
+      </div>
+      <p
+        id="empty-msg"
+        class="text-center text-gray-500 dark:text-gray-400 mt-10 hidden"
+      >
+        Your watchlist is empty.
+        <a href="index.html" class="text-blue-500 hover:underline"
+          >Browse movies</a
+        >
+      </p>
+    </main>
+
+    <script src="js/config.js"></script>
+    <script src="js/watchlist.js"></script>
+    <script src="js/watchlist-page.js" defer></script>
+    <script src="js/script.js" defer></script>
+  </body>
+</html>
